@@ -2,15 +2,18 @@ package dao;
 
 import entity.User;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
  * Created by Администратор on 28.04.2017.
  */
 public class UserDao {
-    private static final String SELECT_USER_BY_ID = "SELECT * FROM sppschema.user WHERE u_id=?";
+    /*static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+    static final String DB_URL = "jdbc:mysql://localhost:3307/";*/
+
+    private static final String SELECT_ALL_USERS = "SELECT * FROM sppschema.user";
 
     private static User extractUserFromResultSet(ResultSet rs) throws SQLException {
         User user = new User();
@@ -28,8 +31,44 @@ public class UserDao {
         return user;
     }
 
-    public static HashSet<User> getAllUsers() {
-        return null;
+    public static ArrayList<User> getAllUsers() {
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ArrayList<User> result = new ArrayList<>();
+        try {
+            connection = DatabaseConnection.getConnection();
+            ps = connection.prepareStatement(SELECT_ALL_USERS);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(extractUserFromResultSet(rs));
+            }
+        } catch (Exception e) {
+            //throw new DAOException(e);
+        } finally {
+            close(ps);
+            close(connection);
+        }
+        return result;
+    }
+
+    public static void close(Statement st) {
+        try {
+            if (st != null) {
+                st.close();
+            }
+        } catch (SQLException e) {
+            // лог о невозможности закрытия Statement
+        }
+    }
+
+    public static void close(Connection connection) {
+        try {
+            if (connection != null) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            //throw new DAOException(e);
+        }
     }
 
 }

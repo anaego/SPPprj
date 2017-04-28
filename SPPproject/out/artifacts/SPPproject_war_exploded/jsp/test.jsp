@@ -22,20 +22,20 @@
 <table>
     <TH>Id</th>
     <TH>Login</th>
-    <TH>Name</th>
+    <!--<TH>Name</th>
     <TH>Surname</th>
     <TH>Fathersname</th>
     <TH>Passport number</th>
-    <TH>email</th>
+    <TH>email</th>-->
     <c:forEach items="${users}" var="user">
         <tr>
             <td><c:out value="${user.id}" /><td>
             <td><c:out value="${user.login}" /><td>
-            <td><c:out value="${user.name}" /><td>
+            <!--<td><c:out value="${user.name}" /><td>
             <td><c:out value="${user.surname}" /><td>
             <td><c:out value="${user.fathersName}" /><td>
             <td><c:out value="${user.passportNumber}" /><td>
-            <td><c:out value="${user.email}" /><td>
+            <td><c:out value="${user.email}" /><td>-->
         </tr>
     </c:forEach>
 </table>
